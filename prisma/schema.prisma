@@ -1,0 +1,171 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  logo_url   String?
+  status     Boolean  @default(true)
+  created_at DateTime @default(now())
+
+  @@map("brands")
+}
+
+model Category {
+  id            Int      @id @default(autoincrement())
+  title         String?
+  parent_id     Int?
+  position      Int?
+  status        Boolean  @default(true)
+  frontDisplay  String?
+  appIcon       String?
+  webImage      String?
+  mainImage     String?
+  filterTypeId  Int?
+  featureTypeId Int?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("categories")
+}
+
+model Vendor {
+  id            Int     @id @default(autoincrement())
+  name          String
+  contact_email String?
+  phone         String?
+  address       String?
+  status        Boolean @default(true)
+
+  @@map("vendors")
+}
+
+
+// Add these models at the end of prisma/schema.prisma:
+
+model AssemblyType {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("assembly_types")
+}
+
+model Color {
+  id       Int     @id @default(autoincrement())
+  name     String
+  hex_code String?
+  status   Boolean @default(true)
+
+  @@map("colors")
+}
+
+model FeatureType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  @@map("featuretype")
+}
+
+model FilterType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  @@map("filtertype")
+}
+
+model Finish {
+  id     Int     @id @default(autoincrement())
+  name   String
+  status Boolean @default(true)
+
+  @@map("finishes")
+}
+
+model Location {
+  id             Int     @id @default(autoincrement())
+  state          String?
+  city           String?
+  pincode        String?
+  is_serviceable Boolean @default(true)
+
+  @@map("locations")
+}
+
+model Material {
+  id     Int     @id @default(autoincrement())
+  name   String
+  status Boolean @default(true)
+
+  @@map("materials")
+}
+
+model ProductStatus {
+  id    Int    @id @default(autoincrement())
+  label String
+
+  @@map("product_status")
+}
+
+model RoomType {
+  id     Int     @id @default(autoincrement())
+  name   String
+  status Boolean @default(true)
+
+  @@map("room_types")
+}
+
+model ShippingPartner {
+  id            Int     @id @default(autoincrement())
+  name          String?
+  api_key       String?
+  contact_email String?
+  status        Boolean @default(true)
+
+  @@map("shipping_partners")
+}
+
+model SizeUOM {
+  id     Int    @id @default(autoincrement())
+  title  String @unique
+  status Boolean @default(true)
+
+  @@map("size_uom")
+}
+
+model Style {
+  id     Int     @id @default(autoincrement())
+  name   String
+  status Boolean @default(true)
+
+  @@map("styles")
+}
+
+enum ApplicableOn {
+  MRP
+  Discounted
+}
+
+model TaxRule {
+  id            Int           @id @default(autoincrement())
+  name          String?
+  percentage    Float?
+  applicable_on ApplicableOn  @default(MRP)
+
+  @@map("tax_rules")
+}
+
+model Warranty {
+  id              Int     @id @default(autoincrement())
+  duration_months Int?
+  description     String?
+
+  @@map("warranties")
+}
